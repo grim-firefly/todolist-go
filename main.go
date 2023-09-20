@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/grim-firefly/todolist-go/database"
+	"github.com/grim-firefly/todolist-go/config"
 )
 
 func main() {
-	database.Connect()
+	config.RegisterRoutes()
 }
