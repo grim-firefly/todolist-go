@@ -1,11 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDoList</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="/public/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Todo List</title>
 </head>
+
 <body>
-        <h1>Home</h1>
+
+    <!-- modal -->
+
+    <div class="modal" id="todo_modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Todo List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" value="1" id="is_active">
+                        <label class="form-check-label" for="is_active">Is Active?</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="save" class="btn btn-primary">Save</button>
+                    <button type="button" id="update" style="display: none;" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- code  -->
+    <div class="container">
+        <h1>TODO List Golang</h1>
+
+        <div style="display: flex;justify-content: end;">
+            <a class="btn btn-primary add-btn">Add</a>
+        </div>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Is Active</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td> <span class="badge bg-success"> Active</span> </td>
+                    <td>
+                        <a class="btn btn-warning btn-sm edit-btn" href="#">Edit</a>
+                        <a class="btn btn-danger btn-sm delete-btn" href="#">Delete</a>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td> <span class="badge bg-danger"> In Active</span> </td>
+
+                    <td>@fat</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="/public/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <script src="/public/js/jquery.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.add-btn', function (e) {
+                $('#todo_modal .modal-title').html('Create Todo List');
+                $('#save').show();
+                $('#update').hide();
+                $('#is_active').prop('checked', true);
+                $('#todo_modal').modal('show');
+            })
+            $(document).on('click', '.edit-btn', function (e) {
+                e.preventDefault();
+                $('#save').hide();
+                $('#update').show();
+                $('#todo_modal .modal-title').html('Edit Todo List');
+                $('#todo_modal').modal('show');
+            })
+
+        })
+    </script>
 </body>
+
+
 </html>
