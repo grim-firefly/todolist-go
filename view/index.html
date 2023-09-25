@@ -92,8 +92,8 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 
-    <script src="/public/js/jquery.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="/public/js/jquery.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
             $(document).on('click', '.add-btn', function (e) {
@@ -111,6 +111,32 @@
                 $('#todo_modal').modal('show');
             })
 
+            // for creating 
+            $(document).on('click', '#save', function () {
+                const title = $('#title').val()
+                const is_active = $('#is_active').prop('checked')
+                console.log(title, is_active)
+                $.ajax({
+                    url: '/todo',
+                    method: 'POST',
+                    data: {
+                        title,
+                        is_active
+                    },
+                    success: function (res) {
+                        console.log(res)
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            })
+            // for updating 
+            $(document).on('click', '#update', function () {
+                const title = $('#title').val()
+                const is_active = $('#is_active').prop('checked')
+                console.log(title, is_active)
+            })
         })
     </script>
 </body>

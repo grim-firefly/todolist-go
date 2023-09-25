@@ -7,5 +7,6 @@ import (
 
 var RegisterRoutes = func(router *chi.Mux) {
 	router.Get("/", controllers.TodoListIndex)
+	router.Post("/todo", controllers.TodoListCreate)
 
 }
