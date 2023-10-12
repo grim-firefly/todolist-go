@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/grim-firefly/todolist-go/migration"
 	"github.com/grim-firefly/todolist-go/routes"
 )
 
@@ -13,6 +14,8 @@ func RegisterRoutes() {
 	// setup ui path like css, js
 	SetupUiPath(chi)
 
+	// migrating
+	migration.Migrate()
 	// registing all logical routes
 	routes.RegisterRoutes(chi)
 

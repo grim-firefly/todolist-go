@@ -114,22 +114,22 @@
             // for creating 
             $(document).on('click', '#save', function () {
                 const title = $('#title').val()
-                const is_active = $('#is_active').prop('checked')
+                const is_active = $('#is_active').is(":checked")
                 console.log(title, is_active)
-                $.ajax({
-                    url: '/todo',
-                    method: 'POST',
-                    data: {
-                        title,
-                        is_active
-                    },
-                    success: function (res) {
-                        console.log(res)
-                    },
-                    error: function (err) {
-                        console.log(err)
-                    }
-                })
+                // $.ajax({
+                //     url: '/todo',
+                //     method: 'POST',
+                //     data: {
+                //         title,
+                //         is_active
+                //     },
+                //     success: function (res) {
+                //         console.log(res)
+                //     },
+                //     error: function (err) {
+                //         console.log(err)
+                //     }
+                // })
             })
             // for updating 
             $(document).on('click', '#update', function () {
