@@ -24,6 +24,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="modal_id" value="">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" id="title" name="title">
@@ -87,38 +88,38 @@
 
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="/public/js/bootstrap.bundle.min.js"crossorigin="anonymous">
+    <script src="/public/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
 
-    <script src="/public/js/jquery.min.js"  crossorigin="anonymous"></script>
+    <script src="/public/js/jquery.min.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            function getData(){
+            function getData() {
                 $.ajax({
-                        url: '/todo',
-                        method: 'get',
-                        data: {
-                        },
-                        success: function (res) {
-                            let data='';
-                            $.each(res,function(key,item){
-                                data+=`<tr>
-                                            <th scope="row">${key+1}</th>
+                    url: '/todo',
+                    method: 'get',
+                    data: {
+                    },
+                    success: function (res) {
+                        let data = '';
+                        $.each(res, function (key, item) {
+                            data += `<tr>
+                                            <th scope="row">${key + 1}</th>
                                             <td>${item.title}</td>
-                                            <td> <span class="badge ${item.is_active ? 'bg-success':'bg-danger'}"> ${item.is_active ? 'Active':'InActive'}</span> </td>
+                                            <td> <span class="badge ${item.is_active ? 'bg-success' : 'bg-danger'}"> ${item.is_active ? 'Active' : 'InActive'}</span> </td>
                                             <td>
                                                 <a class="btn btn-warning btn-sm edit-btn" data-id="${item.ID}" href="#">Edit</a>
                                                 <a class="btn btn-danger btn-sm delete-btn" data-id="${item.ID}" href="#">Delete</a>
 
                                             </td>
                                         </tr>`
-                            })
-                            $('#table-data').html(data)
-                        },
-                        error: function (err) {
-                            console.log(err)
-                        }
-                    })
+                        })
+                        $('#table-data').html(data)
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
             }
             getData();
             $(document).on('click', '.add-btn', function (e) {
@@ -140,30 +141,93 @@
             $(document).on('click', '#save', function () {
                 const title = $('#title').val()
                 const is_active = $('#is_active').is(":checked")
-                console.log(title, is_active)
                 $.ajax({
-                        url: '/todo',
-                        method: 'POST',
-                        data: {
-                            title,
-                            is_active
-                        },
-                        success: function (res) {
-                            $('#todo_modal').modal('hide')
-                            getData();
-                        },
-                        error: function (err) {
-                            console.log(err)
-                        }
-                    })
-                
+                    url: '/todo',
+                    method: 'POST',
+                    data: {
+                        title,
+                        is_active
+                    },
+                    success: function (res) {
+                        $('#todo_modal').modal('hide')
+                        $('#title').val('')
+                        getData();
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+
             })
-            // for updating 
-            $(document).on('click', '#update', function () {
+           
+
+            // for deleting 
+            $(document).on('click', '.delete-btn', function (e) {
+                e.preventDefault();
+                const id = $(this).data('id')
+                $.ajax({
+                    url: '/todo/' + id,
+                    method: 'DELETE',
+                    data: {
+                    },
+                    success: function (res) {
+                        getData();
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            })
+
+
+            // for Editing 
+            $(document).on('click', '.edit-btn', function (e) {
+                e.preventDefault();
+                const id = $(this).data('id')
+                $.ajax({
+                    url: '/todo/' + id,
+                    method: 'GET',
+                    data: {
+                    },
+                    success: function (res) {
+                        console.log(res)
+                        const title = $('#title').val(res.title)
+                        if (res.is_active) {
+                            $('#is_active').prop('checked', true)
+                        }
+                        else {
+                            $('#is_active').prop('checked', false)
+                        }
+                        $('input[name="modal_id"]').val(res.ID)
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            })
+
+             // for updating 
+             $(document).on('click', '#update', function () {
+                const id=$('input[name="modal_id"]').val();
                 const title = $('#title').val()
                 const is_active = $('#is_active').prop('checked')
-                console.log(title, is_active)
+                $.ajax({
+                    url: '/todo/' + id,
+                    method: 'PUT',
+                    data: {
+                        title,
+                        is_active
+                    },
+                    success: function (res) {
+                        $('#todo_modal').modal('hide')
+                        getData();
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
             })
+
         })
     </script>
 </body>

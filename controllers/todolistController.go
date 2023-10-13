@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/grim-firefly/todolist-go/models"
 )
 
@@ -45,6 +46,49 @@ func TodoListCreate(w http.ResponseWriter, r *http.Request) {
 
 		ResponseJson(w, 200, todo)
 		log.Println("Written in TodoList Create")
+	}
+	// return "hi"
+}
+
+// delete
+func TodoListDelete(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "DELETE" {
+		id := chi.URLParam(r, "id")
+		models.DeleteTodoList(id)
+		ResponseJson(w, 200, struct {
+			message string
+		}{
+			message: "Deleted SuccessFully",
+		})
+	}
+}
+
+// info of single todo
+func GetTodoList(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		id := chi.URLParam(r, "id")
+		todo := models.GetTodo(id)
+		ResponseJson(w, 200, todo)
+	}
+}
+
+// update todolist
+// create todolist
+func TodoListUpdate(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "PUT" {
+		r.ParseForm()
+		id := chi.URLParam(r, "id")
+		title := r.PostForm.Get("title")
+		is_active := r.PostForm.Get("is_active")
+		// data := make(map[string]interface{})
+		todo := models.Todo{
+			Title:    title,
+			IsActive: is_active == "true",
+		}
+		updatedTodo := models.UpdateTodo(id, &todo)
+
+		ResponseJson(w, 200, updatedTodo)
+		log.Println("Written in TodoList Update")
 	}
 	// return "hi"
 }

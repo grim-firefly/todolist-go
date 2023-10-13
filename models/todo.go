@@ -25,3 +25,30 @@ func GetAllTodoList() []Todo {
 	db.Find(&todolists)
 	return todolists
 }
+
+// deleting todo
+func DeleteTodoList(id interface{}) {
+	db := database.GetDB()
+	db.Delete(&Todo{}, id)
+
+}
+
+// get single row
+func GetTodo(id interface{}) Todo {
+	db := database.GetDB()
+	var todo Todo
+	db.First(&todo, id)
+	return todo
+}
+
+// update todo list
+
+func UpdateTodo(id interface{}, data *Todo) Todo {
+	db := database.GetDB()
+	var todo Todo
+	db.First(&todo, id)
+	todo.Title = data.Title
+	todo.IsActive = data.IsActive
+	db.Save(&todo)
+	return todo
+}
