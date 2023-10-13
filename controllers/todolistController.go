@@ -3,30 +3,48 @@ package controllers
 import (
 	"encoding/json"
 	"html/template"
+	"log"
 	"net/http"
+
+	"github.com/grim-firefly/todolist-go/models"
 )
 
-func TodoListIndex(writer http.ResponseWriter, request *http.Request) {
-	parseTemplate, err := template.ParseFiles("view/index.html")
-	if err != nil {
-		panic(err)
+// index page
+func TodoListIndex(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		parseTemplate, err := template.ParseFiles("view/index.html")
+		if err != nil {
+			panic(err)
+		}
+		parseTemplate.Execute(w, nil)
+	} else if r.Method == "POST" {
+		res := models.GetAllTodoList()
+		ResponseJson(w, 200, res)
 	}
-	parseTemplate.Execute(writer, nil)
 
 }
 
+// get all todo list
+func GetAllTodoList(w http.ResponseWriter, r *http.Request) {
+	res := models.GetAllTodoList()
+	ResponseJson(w, 200, res)
+}
+
+// create todolist
 func TodoListCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		r.ParseForm()
-		title := r.Form.Get("title")
-		is_active := r.PostForm.Get("title")
-		ResponseJson(w, 200, struct {
-			Title    string `json:"title"`
-			IsActive string `json:"is_active"`
-		}{
+		title := r.PostForm.Get("title")
+		is_active := r.PostForm.Get("is_active")
+		// data := make(map[string]interface{})
+		todo := models.Todo{
 			Title:    title,
-			IsActive: is_active,
-		})
+			IsActive: is_active == "true",
+		}
+		models.CreateTodo(&todo)
+
+		ResponseJson(w, 200, todo)
+		log.Println("Written in TodoList Create")
 	}
 	// return "hi"
 }
