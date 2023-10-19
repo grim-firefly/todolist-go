@@ -10,10 +10,9 @@ import (
 )
 
 // DB is the connection handle
-var DB *gorm.DB
 
-// ConnectDB connects to the database
-func Connect() {
+// connect to the mysql database
+func MySQLConnect() {
 	godotenv.Load()
 	host := os.Getenv("MYSQL_HOST")
 	port := os.Getenv("MYSQL_PORT")
@@ -27,9 +26,4 @@ func Connect() {
 		panic("failed to connect database")
 	}
 	DB = d
-}
-
-func GetDB() *gorm.DB {
-	Connect()
-	return DB
 }
